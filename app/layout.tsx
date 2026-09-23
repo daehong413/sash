@@ -7,15 +7,25 @@ import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: `${siteConfig.name} | ${siteConfig.tagline}`,
-  description: "샤시 교체, 이중창 단열 시공, 방범창 제작까지 직영팀이 책임 시공합니다.",
+  description:
+    "샤시 교체, 이중창 단열 시공, 방범창 제작까지 직영팀이 책임 시공합니다.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ko">
       <body className="font-sans">
+        <a className="skip-link" href="#main-content">
+          본문으로 바로가기
+        </a>
         <Header />
-        <main>{children}</main>
+        <main id="main-content" tabIndex={-1}>
+          {children}
+        </main>
         <Footer />
         <FloatingConsult />
       </body>

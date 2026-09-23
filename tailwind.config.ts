@@ -5,17 +5,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#14161A",
-        paper: "#FFFFFF",
-        cloud: "#F5F7FA",
-        muted: "#6B7280",
-        primary: "#1F5FD1",
-        "primary-dark": "#1A4FB0",
-        mint: "#00C2A8",
-        line: "#E9EBEF",
+        ink: "var(--color-ink)",
+        paper: "var(--color-paper)",
+        cloud: "var(--color-cloud)",
+        muted: "var(--color-muted)",
+        primary: "var(--color-primary)",
+        "primary-dark": "var(--color-primary-dark)",
+        mint: "var(--color-accent)",
+        line: "var(--color-line)",
+        brass: "var(--color-primary)",
+        "brass-dark": "var(--color-primary-dark)",
+        graphite: "var(--color-muted)",
       },
       fontFamily: {
-        sans: ["var(--font-pretendard)", "Pretendard", "-apple-system", "sans-serif"],
+        sans: [
+          "var(--font-pretendard)",
+          "Pretendard",
+          "-apple-system",
+          "sans-serif",
+        ],
       },
       maxWidth: {
         content: "1180px",

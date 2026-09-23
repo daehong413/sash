@@ -1,30 +1,72 @@
-import { siteConfig } from "@/lib/site-config";
+"use client";
+
+import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { WindowMark } from "./Icons";
+import { getBrandStepCount } from "@/lib/motion";
 
 export default function BrandStatement() {
+  const stage = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const node = stage.current;
+    if (!node) return;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let previous = -1;
+    const update = () => {
+      frame = 0;
+      const bounds = node.getBoundingClientRect();
+      const count = preference.matches
+        ? 4
+        : getBrandStepCount(bounds.top, bounds.height, window.innerHeight);
+      if (count !== previous) {
+        node.dataset.visibleSteps = String(count);
+        previous = count;
+      }
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    preference.addEventListener("change", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      preference.removeEventListener("change", schedule);
+    };
+  }, []);
+
   return (
-    <section className="bg-cloud">
-      <div className="container-content py-20 md:py-28 text-center">
-        <p className="text-[15px] text-muted mb-3">‘여닫을 때마다, 한결같이’</p>
-        <h2 className="text-[26px] md:text-[34px] font-bold text-ink tracking-tight2 leading-snug">
-          창호에 관한 모든 것,
-          <br />
-          <span className="text-primary">하나의 브랜드</span>로
-        </h2>
-
-        <div className="mt-12 max-w-md mx-auto">
-          <p className="text-[15px] font-semibold text-ink">꼭 저희가 아니어도 괜찮아요</p>
-          <p className="mt-2 text-[14.5px] text-muted leading-6">
-            천천히 비교해보고, 우리 집에 가장 맞는 선택을 해주세요.
+    <section className="brand-statement" aria-labelledby="brand-title">
+      <Image
+        src="/images/generated/brand-daylight.png"
+        alt=""
+        fill
+        sizes="100vw"
+        className="brand-backdrop"
+      />
+      <div className="brand-backdrop-overlay" aria-hidden="true" />
+      <div className="container-content">
+        <div ref={stage} className="brand-stage">
+          <h2 id="brand-title">
+            <span className="brand-step" data-step="1">
+              오늘의 선택이
+            </span>
+            <span className="brand-step" data-step="2">
+              오래도록 편안하도록.
+            </span>
+          </h2>
+          <p className="brand-step brand-lead" data-step="3">
+            여닫을 때마다, 한결같이.
           </p>
-        </div>
-
-        <div className="mt-10 inline-flex items-center gap-2">
-          <span className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <path d="M9 15h12M15 9v12" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" transform="translate(-3 -3)" />
-            </svg>
-          </span>
-          <span className="text-[15px] font-bold text-ink">{siteConfig.name}</span>
+          <div className="brand statement-logo brand-step" data-step="4">
+            <WindowMark />
+            <span>호용샤시</span>
+          </div>
         </div>
       </div>
     </section>

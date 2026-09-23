@@ -1,1 +1,26 @@
+# Dependencies
 node_modules/
+
+# Build output and caches
+/.next/
+/out/
+/build/
+/coverage/
+/.turbo/
+/.vercel/
+*.tsbuildinfo
+
+# Local agent settings and design references
+/.agent/
+/.agents/
+/design-system/
+/designsystem/
+
+# Local environment (keep the shared template)
+.env*
+!.env.example
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db

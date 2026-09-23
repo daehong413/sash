@@ -1,53 +1,78 @@
-const reviews = [
+import Link from "next/link";
+import Image from "next/image";
+import Reveal from "./Reveal";
+import ScrollGallery from "./ScrollGallery";
+import { Arrow } from "./Icons";
+const items = [
   {
-    tag: "이중창 시공",
-    date: "2026. 08. 12",
-    author: "OO동 아파트",
-    title: "겨울 웃풍 걱정 끝, 이중창 시공 후기",
-    body: "겨울마다 웃풍 때문에 고민이었는데 이중창 시공 후 확실히 따뜻해졌어요. 실측부터 시공까지 하루 만에 끝나서 놀랐습니다.",
+    tag: "단열 · 이중창",
+    title: "찬 바람 대신, 온기가 머무는 집.",
+    body: "웃풍과 결로가 고민이라면, 창틀과 유리 사양부터 살펴보세요.",
+    href: "/services#insulation",
+    image: "/images/generated/story-warmth.png",
+    alt: "겨울 풍경을 마주한 따뜻한 침실의 이중창",
+    position: "70% center",
   },
   {
-    tag: "샤시 교체",
-    date: "2026. 07. 28",
-    author: "OO동 주택",
-    title: "노후 샤시 전체 교체, 만족스러운 마감",
-    body: "20년 된 샤시를 전체 교체했는데 마감이 정말 깔끔했어요. 견적도 자재 등급까지 자세히 설명해주셔서 믿음이 갔습니다.",
+    tag: "노후 샤시 교체",
+    title: "익숙한 공간에 새로운 쾌적함을.",
+    body: "뻑뻑한 움직임과 오래된 창틀, 우리 집에 맞는 교체 방법을 찾아보세요.",
+    href: "/services#replace",
+    image: "/images/generated/story-renovation.png",
+    alt: "새 창호를 설치한 아파트의 긴 베란다",
+    position: "center",
   },
   {
-    tag: "방범창",
-    date: "2026. 06. 15",
-    author: "OO동 빌라",
-    title: "저층 세대 방범창 설치 후기",
-    body: "1층이라 방범이 항상 걱정이었는데 화재 대피형 방범창으로 설치해주셔서 안심이 됩니다. 상담도 친절했어요.",
+    tag: "방범창 · 방충망",
+    title: "바람은 가볍게, 마음은 편안하게.",
+    body: "환기와 안전을 함께 생각하는 우리 집 창문을 준비하세요.",
+    href: "/services#safety",
+    image: "/images/generated/story-screen.png",
+    alt: "푸른 나무가 보이는 촘촘한 창문 방충망",
+    position: "left center",
   },
 ];
-
 export default function Testimonials() {
   return (
-    <section className="bg-paper">
-      <div className="container-content py-16 md:py-20">
-        <h2 className="text-[24px] md:text-[30px] font-bold text-ink tracking-tight2 mb-10 text-center">
-          고객님이 직접 남긴 이야기
-        </h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {reviews.map((r) => (
-            <article key={r.title} className="rounded-xl2 border border-line overflow-hidden shadow-card">
-              <div className="aspect-[4/3] bg-cloud flex items-center justify-center">
-                <span className="text-[13px] text-muted">시공 사진</span>
-              </div>
-              <div className="p-6">
-                <span className="inline-block rounded-pill bg-primary/10 text-primary text-[12.5px] font-semibold px-3 py-1 mb-3">
-                  #{r.tag}
-                </span>
-                <h3 className="text-[16px] font-bold text-ink leading-6 mb-2">{r.title}</h3>
-                <p className="text-[14px] text-muted leading-6">{r.body}</p>
-                <p className="mt-4 text-[12.5px] text-muted/80">
-                  {r.author} · {r.date}
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
+    <section className="section-space">
+      <div className="container-content">
+        <Reveal>
+          <div className="section-heading heading-row">
+            <div>
+              <p className="eyebrow">공간별 창호 선택</p>
+              <h2 className="section-title">
+                창이 바뀌면,
+                <br />
+                일상도 달라지니까.
+              </h2>
+            </div>
+            <Link className="text-link" href="/services">
+              시공 서비스 모두 보기
+              <Arrow />
+            </Link>
+          </div>
+          <ScrollGallery>
+            {items.map((item) => (
+              <Link className="editorial-card" key={item.href} href={item.href}>
+                <div className="editorial-image">
+                  <Image
+                    src={item.image}
+                    alt={item.alt}
+                    fill
+                    sizes="(max-width: 767px) 100vw, 400px"
+                    style={{ objectPosition: item.position }}
+                  />
+                  <span className="editorial-arrow">
+                    <Arrow diagonal />
+                  </span>
+                </div>
+                <span className="card-tag">{item.tag}</span>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </Link>
+            ))}
+          </ScrollGallery>
+        </Reveal>
       </div>
     </section>
   );

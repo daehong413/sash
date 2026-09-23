@@ -1,75 +1,45 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
-
+import { WindowMark, Arrow } from "./Icons";
 export default function Footer() {
   return (
-    <footer className="bg-cloud text-muted border-t border-line">
-      <div className="container-content py-14">
-        <div className="flex flex-col md:flex-row md:justify-between gap-10">
+    <footer className="site-footer">
+      <div className="container-content">
+        <div className="footer-main">
           <div>
-            <div className="text-[18px] font-bold text-ink mb-3">{siteConfig.name}</div>
-            <p className="text-[14px] leading-6 max-w-xs">
+            <Link className="brand" href="/">
+              <WindowMark />
+              <span>{siteConfig.name}</span>
+            </Link>
+            <p className="footer-tagline">여닫을 때마다, 한결같이.</p>
+            <p className="footer-details">
               {siteConfig.address}
-              <br />
-              {siteConfig.businessHours}
               <br />
               {siteConfig.regNumber}
             </p>
           </div>
-
-          <div className="flex gap-16">
-            <div>
-              <div className="text-[13px] font-semibold text-ink mb-3">바로가기</div>
-              <ul className="space-y-2 text-[14px]">
-                {siteConfig.nav.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href} className="hover:text-ink transition-colors">
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <div className="text-[13px] font-semibold text-ink mb-3">연락처</div>
-              <ul className="space-y-2 text-[14px]">
-                <li>
-                  <a href={siteConfig.phoneHref} className="hover:text-ink transition-colors">
-                    {siteConfig.phone}
-                  </a>
-                </li>
-                <li>
-                  <a href={`mailto:${siteConfig.email}`} className="hover:text-ink transition-colors">
-                    {siteConfig.email}
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <div className="text-[13px] font-semibold text-ink mb-3">SNS</div>
-              <ul className="space-y-2 text-[14px]">
-                <li>
-                  <a href={siteConfig.social.blog} className="hover:text-ink transition-colors">
-                    블로그
-                  </a>
-                </li>
-                <li>
-                  <a href={siteConfig.social.instagram} className="hover:text-ink transition-colors">
-                    인스타그램
-                  </a>
-                </li>
-                <li>
-                  <a href={siteConfig.social.youtube} className="hover:text-ink transition-colors">
-                    유튜브
-                  </a>
-                </li>
-              </ul>
-            </div>
+          <nav aria-label="푸터 메뉴">
+            {siteConfig.nav.map((item) => (
+              <Link href={item.href} key={item.href}>
+                {item.label}
+                <Arrow diagonal />
+              </Link>
+            ))}
+          </nav>
+          <div className="footer-contact">
+            <span>창호 상담 문의</span>
+            <a href={siteConfig.phoneHref}>{siteConfig.phone}</a>
+            <p>{siteConfig.businessHours}</p>
+            <a className="footer-email" href={`mailto:${siteConfig.email}`}>
+              {siteConfig.email}
+            </a>
           </div>
         </div>
-
-        <div className="mt-12 pt-6 border-t border-line text-[12px]">
-          © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+        <div className="footer-bottom">
+          <span>
+            © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+          </span>
+          <span>기본을 지키는 시공, 오래 이어지는 신뢰.</span>
         </div>
       </div>
     </footer>

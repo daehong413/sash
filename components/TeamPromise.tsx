@@ -1,59 +1,200 @@
-const team = [
+"use client";
+import { useRef, useState } from "react";
+import { Arrow } from "./Icons";
+import Image from "next/image";
+const promises = [
   {
-    name: "김성진",
-    role: "대표",
-    quote: "창호는 마감재가 아니라 단열재입니다.",
-    body: "언제나 기본을 지켜야 오래 신뢰받을 수 있다는 마음으로 시공하겠습니다.",
+    label: "정확한 실측",
+    title: (
+      <>
+        모든 창이 다르기에,
+        <br />
+        직접 보고 시작합니다.
+      </>
+    ),
+    desc: "집의 방향과 구조, 기존 창틀의 상태까지. 현장을 살펴 우리 집에 꼭 필요한 시공을 제안합니다.",
+    detail: "현장 확인 · 맞춤 상담 · 시공 범위 안내",
+    word: "MEASURE",
+    image: "/images/generated/measure.png",
+    alt: "기존 창틀의 폭을 줄자로 실측하는 작업",
   },
   {
-    name: "박현우",
-    role: "시공팀장",
-    quote: "결과가 만족스럽지 않다면 의미가 없습니다.",
-    body: "실측한 사람이 끝까지 책임지는 시공으로 결과를 보여드리겠습니다.",
+    label: "정직한 자재",
+    title: (
+      <>
+        보이지 않는 사양도,
+        <br />
+        분명하게 안내합니다.
+      </>
+    ),
+    desc: "창틀 소재부터 유리의 등급과 두께까지. 비교하고 선택할 수 있도록 견적에 사용 자재를 명확하게 담습니다.",
+    detail: "자재 사양 · 유리 등급 · 투명한 견적",
+    word: "MATERIAL",
+    image: "/images/generated/materials.png",
+    alt: "창틀 단면과 복층 유리 자재 샘플",
   },
   {
-    name: "이지훈",
-    role: "수도권 담당",
-    quote: "한 번의 시공으로 끝나는 인연이 아니길 바랍니다.",
-    body: "다음에도 다시 찾고 싶은 시공팀이 되도록 노력하겠습니다.",
+    label: "꼼꼼한 시공",
+    title: (
+      <>
+        작은 틈 하나까지,
+        <br />
+        끝까지 살펴봅니다.
+      </>
+    ),
+    desc: "수평과 수직을 맞추고, 틈새를 채우고, 마감을 확인합니다. 눈에 잘 띄지 않는 부분까지 기본을 지킵니다.",
+    detail: "정밀 설치 · 틈새 마감 · 작동 점검",
+    word: "DETAIL",
+    image: "/images/generated/installation.png",
+    alt: "창틀 가장자리에 실리콘을 꼼꼼하게 마감하는 작업",
   },
   {
-    name: "정민수",
-    role: "A/S 담당",
-    quote: "고객은 과정보다 결과를 기억합니다.",
-    body: "맡겨주신 만큼 만족스러운 결과로 보답하겠습니다.",
+    label: "책임 있는 관리",
+    title: (
+      <>
+        창을 설치한 다음도,
+        <br />
+        우리의 일입니다.
+      </>
+    ),
+    desc: "여닫는 움직임부터 사용 중 궁금한 점까지. 시공 후에도 편안하게 사용할 수 있도록 함께 살펴드립니다.",
+    detail: "사용 안내 · 시공 확인 · 사후 상담",
+    word: "CARE",
+    image: "/images/generated/aftercare.png",
+    alt: "창문 경첩과 하드웨어를 점검하는 작업",
   },
 ];
-
-function Avatar({ name }: { name: string }) {
-  return (
-    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-[16px]">
-      {name.slice(0, 1)}
-    </div>
-  );
-}
-
 export default function TeamPromise() {
+  const [active, setActive] = useState(0);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const pointer = useRef<{ x: number; y: number } | null>(null);
+  function select(index: number) {
+    setActive((index + promises.length) % promises.length);
+  }
+
   return (
-    <section className="bg-paper">
-      <div className="container-content py-16 md:py-20">
-        <h2 className="text-[24px] md:text-[30px] font-bold text-ink tracking-tight2 mb-10 text-center">
-          고객님께 전하는 약속
-        </h2>
-        <div className="grid sm:grid-cols-2 gap-5">
-          {team.map((m) => (
-            <div key={m.name} className="rounded-xl2 border border-line p-7 flex gap-5">
-              <Avatar name={m.name} />
-              <div>
-                <p className="text-[13.5px] text-muted mb-1">
-                  {m.role} · {m.name}
-                </p>
-                <p className="text-[15.5px] font-bold text-ink leading-6">{m.quote}</p>
-                <p className="mt-1.5 text-[14px] text-muted leading-6">{m.body}</p>
+    <section
+      className="promise-section section-space"
+      aria-label="시공 원칙 슬라이드"
+    >
+      <div className="container-content">
+        <div className="section-heading">
+          <p className="eyebrow">시공 전 확인하는 네 가지</p>
+          <h2 className="section-title">
+            좋은 시공을 위한
+            <br />
+            변하지 않는 네 가지 약속.
+          </h2>
+        </div>
+        <div className="promise-tabs" role="tablist" aria-label="시공 원칙">
+          {promises.map((item, i) => (
+            <button
+              key={item.label}
+              ref={(el) => {
+                tabs.current[i] = el;
+              }}
+              id={`promise-tab-${i}`}
+              role="tab"
+              type="button"
+              aria-selected={active === i}
+              aria-controls={`promise-panel-${i}`}
+              tabIndex={active === i ? 0 : -1}
+              onClick={() => select(i)}
+              onKeyDown={(event) => {
+                let next = i;
+                if (event.key === "ArrowRight") next = (i + 1) % 4;
+                else if (event.key === "ArrowLeft") next = (i + 3) % 4;
+                else if (event.key === "Home") next = 0;
+                else if (event.key === "End") next = 3;
+                else return;
+                event.preventDefault();
+                select(next);
+                tabs.current[next]?.focus();
+              }}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div
+        className="promise-viewport"
+        onPointerDown={(event) => {
+          if (event.pointerType !== "mouse") {
+            pointer.current = { x: event.clientX, y: event.clientY };
+            event.currentTarget.setPointerCapture(event.pointerId);
+          }
+        }}
+        onPointerCancel={() => {
+          pointer.current = null;
+        }}
+        onPointerUp={(event) => {
+          const start = pointer.current;
+          pointer.current = null;
+          if (!start) return;
+          const dx = event.clientX - start.x;
+          const dy = event.clientY - start.y;
+          if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy))
+            select(active + (dx < 0 ? 1 : -1));
+        }}
+      >
+        <div
+          className="promise-track"
+          style={{
+            transform: `translateX(calc(-${active * 100}% - ${active * 24}px))`,
+          }}
+        >
+          {promises.map((item, i) => (
+            <div
+              key={item.word}
+              className={`promise-panel ${active === i ? "is-active" : ""}`}
+              id={`promise-panel-${i}`}
+              role="tabpanel"
+              aria-labelledby={`promise-tab-${i}`}
+              aria-hidden={active !== i}
+              tabIndex={active === i ? 0 : -1}
+            >
+              <div className="promise-art">
+                <Image
+                  src={item.image}
+                  alt={item.alt}
+                  fill
+                  sizes="(max-width: 767px) 100vw, 500px"
+                />
+                <span className="promise-art-word">{item.label}</span>
+              </div>
+              <div className="promise-content">
+                <span className="eyebrow">시공 원칙</span>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+                <div className="promise-detail">
+                  <span>{item.detail}</span>
+                </div>
               </div>
             </div>
           ))}
         </div>
+      </div>
+      <div className="carousel-controls" aria-label="약속 슬라이드 제어">
+        <button
+          type="button"
+          onClick={() => select(active - 1)}
+          aria-label="이전 약속"
+        >
+          <Arrow className="arrow-back" />
+        </button>
+        <span className="carousel-page" aria-live="polite" aria-atomic="true">
+          <strong>{active + 1}</strong>
+          <span>/</span>
+          {promises.length}
+        </span>
+        <button
+          type="button"
+          onClick={() => select(active + 1)}
+          aria-label="다음 약속"
+        >
+          <Arrow />
+        </button>
       </div>
     </section>
   );
